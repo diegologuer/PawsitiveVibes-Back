@@ -4,6 +4,8 @@ public class Carrito {
 	
 	private Long id;
 	private Integer cantidad;
+	private Long productos_id;
+	private Long usuario_id;
 
 	private static long total= 0;
 
