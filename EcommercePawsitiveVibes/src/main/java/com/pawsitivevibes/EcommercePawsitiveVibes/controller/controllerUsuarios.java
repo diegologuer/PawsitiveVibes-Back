@@ -11,12 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pawsitivevibes.EcommercePawsitiveVibes.model.Productos;
+import com.pawsitivevibes.EcommercePawsitiveVibes.model.CambiarContrasena;
 import com.pawsitivevibes.EcommercePawsitiveVibes.model.Usuarios;
-import com.pawsitivevibes.EcommercePawsitiveVibes.service.ProductoService;
 import com.pawsitivevibes.EcommercePawsitiveVibes.service.UsuariosService;
 
 @RestController
@@ -52,16 +50,10 @@ public class controllerUsuarios {
 	}
 	
 	@PutMapping(path="{prodId}")
-	public Usuarios updateUsuario(@PathVariable("prodId") Long id,
-			@RequestParam(required=false) String nombre,
-			@RequestParam(required=false) String telefono,
-			@RequestParam(required=false) String correo,
-			@RequestParam(required=false) String contrasena,
-			@RequestParam(required=false) String imagen
-			) 
+	public Usuarios updateUsuario(@PathVariable("prodId") Long id, @RequestBody CambiarContrasena cambiarContrasena)
 	{
-		
-		return usuariosService.updateUsuario(id, nombre, telefono, correo, contrasena, imagen);
+
+		return usuariosService.updateUsuario(id, cambiarContrasena);
 		
 	}
 }

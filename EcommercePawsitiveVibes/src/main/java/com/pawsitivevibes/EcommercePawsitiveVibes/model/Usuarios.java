@@ -1,15 +1,36 @@
 package com.pawsitivevibes.EcommercePawsitiveVibes.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="Usuarios")
 public class Usuarios {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(unique=true, nullable=false)
 	private Long id;
+	
+	@Column(nullable=false)
 	private String nombre;
+	
+	@Column(nullable=false)
 	private String telefono;
+	
+	@Column(nullable=false)
 	private String correo;
+	
+	@Column(nullable=false)
 	private String contrasena;
+	
+	@Column(nullable=false)
 	private String imagen;
 	
-	private static long total= 0;
 
 	public Usuarios(String nombre, String telefono, String correo, String contrasena, String imagen) {
 		super();
@@ -18,13 +39,10 @@ public class Usuarios {
 		this.correo = correo;
 		this.contrasena = contrasena;
 		this.imagen = imagen;
-		Usuarios.total++;
-		this.id = Usuarios.total;
 	}
 	
 	public Usuarios() {
-		Usuarios.total++;
-		this.id = Usuarios.total;
+
 	}
 
 	public String getNombre() {
@@ -67,13 +85,6 @@ public class Usuarios {
 		this.imagen = imagen;
 	}
 
-	public static long getTotal() {
-		return total;
-	}
-
-	public static void setTotal(long total) {
-		Usuarios.total = total;
-	}
 
 	public Long getId() {
 		return id;

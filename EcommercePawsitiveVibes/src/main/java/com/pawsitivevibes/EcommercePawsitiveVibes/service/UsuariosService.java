@@ -1,71 +1,75 @@
 package com.pawsitivevibes.EcommercePawsitiveVibes.service;
 
-import java.util.ArrayList;
 import java.util.List;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import com.pawsitivevibes.EcommercePawsitiveVibes.model.Productos;
+import com.pawsitivevibes.EcommercePawsitiveVibes.Repository.UsuariosRepository;
+import com.pawsitivevibes.EcommercePawsitiveVibes.model.CambiarContrasena;
 import com.pawsitivevibes.EcommercePawsitiveVibes.model.Usuarios;
 
 @Service
 public class UsuariosService {
 	
-		public final ArrayList<Usuarios> lista = new ArrayList<>();
+		public final UsuariosRepository usuariosRepository;
+		
 		@Autowired
-		public UsuariosService() {
-			lista.add(new Usuarios("Diego", "3321092647", "diego@gmail.com", "Hola123@", "imagen1.png"));
-			lista.add(new Usuarios("Mariel", "5558587454", "mariel@gmail.com", "Mariel123", "imagen2.png"));
-			lista.add(new Usuarios("Adonis", "3515484874", "adonis@gmail.com", "Adonis123", "imagen3.png"));
-
+		public UsuariosService(UsuariosRepository usuariosRepository) {
+			this.usuariosRepository = usuariosRepository;
 		}
+		
 		
 		public List<Usuarios> getAllUsuarios() {
-			return this.lista;
+			return usuariosRepository.findAll();
 		}
 		
+
+
 		public Usuarios getUsuario(Long id) {
-			Usuarios tmp = null;
-			for(Usuarios usuario : lista) {
-				if(usuario.getId().equals(id)) {
-					tmp=usuario;
-					break;
-				}
-			}
-			return tmp;
+			return usuariosRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("El producto con el id [" + id + "] no existe"));
 		}
+		
+		
 		public Usuarios deleteUsuario(Long id) {
 		 Usuarios tmp = null;
-			for (Usuarios usuario : lista) {
-				if(usuario.getId().equals(id)) {
-					tmp=lista.remove(lista.indexOf(usuario));
-					break;
-				}
+			if (usuariosRepository.existsById(id)) {
+				tmp = usuariosRepository.findById(id).get();
+				usuariosRepository.deleteById(id);
 			}
 			return tmp;
 		}
 		
+		
 		public Usuarios addUsuario(Usuarios usuario) {
-			lista.add(usuario);
-			return usuario;
+			Usuarios tmp = null;
+			if (usuariosRepository.findByCorreo(usuario.getCorreo()).isEmpty()){
+			tmp = usuariosRepository.save(usuario);
+			} else System.out.println("El usuario con el email [" + usuario.getCorreo()
+					+ "] ya se encuentra registrado");
+			return tmp;
 		}
 		
 		
-		public  Usuarios updateUsuario(Long id, String nombre, String telefono, String correo, String contrasena,
-				String imagen) {
+		public  Usuarios updateUsuario(Long id, CambiarContrasena cambiarContrasena) {
 			Usuarios tmp = null;
-			for(Usuarios usuario : lista) {
-				if(usuario.getId().equals(id)) {
-					if(nombre!=null) usuario.setNombre(nombre);
-					if(telefono!=null) usuario.setTelefono(telefono);
-					if(correo!=null) usuario.setCorreo(correo);
-					if(contrasena!=null) usuario.setContrasena(contrasena);
-	
-					tmp=usuario;
-					break;
-				}
+			if (usuariosRepository.existsById(id)) {
+				tmp = usuariosRepository.findById(id).get();
+				if (cambiarContrasena.getOldPassword() != null && cambiarContrasena.getNewPassword() != null) {
+					if (tmp.getContrasena().equals(cambiarContrasena.getOldPassword())) {
+						tmp.setContrasena(cambiarContrasena.getNewPassword());
+						usuariosRepository.save(tmp);
+					} // coincidencia de las contras 
+					else {
+						tmp = null;
+					}
+				} // contraseñas 
+				System.out.println(cambiarContrasena.getOldPassword() + " " + cambiarContrasena.getNewPassword());
+			} // usuario
+			else {
+				System.out.println("El usuario con el id [" + id
+						+ "] no existe");
 			}
 			return tmp;
 		}

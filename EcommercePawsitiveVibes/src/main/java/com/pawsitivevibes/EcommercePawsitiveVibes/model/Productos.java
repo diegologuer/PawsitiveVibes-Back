@@ -1,25 +1,51 @@
 package com.pawsitivevibes.EcommercePawsitiveVibes.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-
+@Entity
+@Table(name="Productos")
 public class Productos {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(unique=true, nullable=false)
 	private Long id;
+	
+	@Column(nullable=false)
 	private String titulo;
+	
+	@Column(nullable=false)
 	private String categoria;
+	
+	@Column(nullable=false)
 	private Integer numStock;
+	
+	@Column(nullable=false)
 	private String marca;
+	
+	@Column(nullable=false)
 	private String descripcion;
+	
+	@Column(nullable=false)
 	private String seccion;
+	
+	@Column(nullable=false)
 	private Integer descuento;
+	
+	@Column(nullable=false)
 	private Double precio;
+	
+	@Column(nullable=false)
 	private String imagen;
 	
-	private static long total= 0;
 
 	public Productos(String titulo, String categoria, Integer numStock, String marca, String descripcion,
 			String seccion, Integer descuento, Double precio, String imagen) {
-		super();
 		this.titulo = titulo;
 		this.categoria = categoria;
 		this.numStock = numStock;
@@ -29,13 +55,9 @@ public class Productos {
 		this.descuento = descuento;
 		this.precio = precio;
 		this.imagen = imagen;
-		Productos.total++;
-		this.id = Productos.total;
 		}
 	
 	public Productos() {
-		Productos.total++;
-		this.id = Productos.total;
 	}
 
 	public String getTitulo() {
@@ -108,14 +130,6 @@ public class Productos {
 
 	public void setImagen(String imagen) {
 		this.imagen = imagen;
-	}
-
-	public static long getTotal() {
-		return total;
-	}
-
-	public static void setTotal(long total) {
-		Productos.total = total;
 	}
 
 	public Long getId() {
