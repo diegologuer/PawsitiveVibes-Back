@@ -1,5 +1,9 @@
 # PawsitiveVibes-Back
 
+##Jenkins server address
+Elsatic IP address: `3.130.11.87`
+
+
 ## administrator user
 username: `admin` 
 
