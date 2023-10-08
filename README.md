@@ -1,4 +1,4 @@
-# PawsitiveVibes-Back
+# PawsitiveVibes-Backend
 
 ## Jenkins server address
 Elsatic IP address: `3.130.11.87`
